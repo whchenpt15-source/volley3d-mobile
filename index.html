@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<title>Volley 3D Mobile V1.8 — 手機 2v2 AI 排球</title>
+<title>Volley 3D Mobile V2.0 — 手機 2v2 AI 排球</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#fff;font-synthesis:none;-webkit-tap-highlight-color:transparent}
 *{box-sizing:border-box}
@@ -29,19 +29,23 @@ button{border:1px solid #ffffff5b;border-radius:14px;background:#206f9e;color:wh
 #pad{width:122px;height:122px;border-radius:50%;border:2px solid #ffffff79;background:radial-gradient(circle,#ffffff30 0%,#ffffff1b 55%,#ffffff10 100%);position:relative;pointer-events:auto;touch-action:none;box-shadow:0 3px 25px #06203955}
 #pad:after{content:'+';font:300 35px system-ui;position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);color:#ffffff45}
 #nub{position:absolute;top:calc(50% - 21px);left:calc(50% - 21px);height:42px;width:42px;border-radius:50%;background:#e6f7ffe6;box-shadow:0 2px 11px #0003;z-index:2;pointer-events:none}
-#rightControls{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));width:190px;pointer-events:none}
-#aimBox{margin-bottom:8px;background:#0d253b99;border-radius:12px;padding:5px 10px 7px;pointer-events:auto}
-#aimLabel{display:flex;justify-content:space-between;font-size:10px;color:#f4faff;letter-spacing:.2px}#aimReadout{color:#ffe19c;font-weight:800}
-#aimTrack{height:18px;position:relative;margin:0 3px;touch-action:none;pointer-events:auto}#aimTrack:before{content:'';position:absolute;left:0;right:0;top:8px;height:4px;border-radius:8px;background:#ffffff78}
-#aimNub{position:absolute;top:2px;width:13px;height:15px;border:2px solid #fff6c4;background:#f5b84d;border-radius:8px;transform:translateX(-50%)}
+#rightControls{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));width:182px;pointer-events:none}
 #charge{height:6px;border-radius:10px;overflow:hidden;border:1px solid #ffffff70;background:#0a2031aa;margin:0 0 7px}#bar{height:100%;width:0;background:linear-gradient(90deg,#f8e58d,#fa814b)}
-#touchbuttons{display:grid;grid-template-columns:1fr 1fr;gap:11px;pointer-events:auto}#touchbuttons button{height:73px;min-height:56px;font-size:17px;border-radius:15px;box-shadow:0 5px 0 #123958bd}#touchbuttons button[data-action="hit"]{background:#d26938;box-shadow:0 5px 0 #703419}#touchbuttons button[data-action="jump"]{background:#775fa8;box-shadow:0 5px 0 #413269}#touchbuttons button.recommended{outline:3px solid #ffee88;outline-offset:1px}#touchbuttons button:disabled{opacity:.48;filter:grayscale(.3);box-shadow:none;cursor:default}
+/* V2.0：撲接上方置中、跳躍與擊球下方兩側，三個真圓形的觸控區。 */
+.circleAction{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;aspect-ratio:1/1;border-radius:50%;padding:0;line-height:1.1;pointer-events:auto;box-shadow:0 5px 0 #123958bd;flex-shrink:0}
+.actionIcon{display:block;font-size:23px;line-height:1}.actionText{display:block;font-size:13px;line-height:1.2;white-space:nowrap}
+#diveButton{display:flex;width:76px;height:76px;margin:0 auto 10px;background:#178b94;border-color:#a2fff0;box-shadow:0 5px 0 #07515b}
+#diveButton:disabled{opacity:.52;filter:grayscale(.2);box-shadow:none}#diveButton:disabled .actionText{font-size:11px}
+#touchbuttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;justify-items:center;pointer-events:auto}
+#touchbuttons button{width:76px;height:76px;min-height:0;border-radius:50%}
+#touchbuttons button[data-action="hit"]{background:#d26938;box-shadow:0 5px 0 #703419}#touchbuttons button[data-action="jump"]{background:#775fa8;box-shadow:0 5px 0 #413269}
+#touchbuttons button.recommended{outline:3px solid #ffee88;outline-offset:1px}#touchbuttons button:disabled{opacity:.48;filter:grayscale(.3);box-shadow:none;cursor:default}
 #landscapeTip{display:none;position:absolute;top:calc(116px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;background:#1b3a58d9;border:1px solid #fff5;border-radius:12px;padding:7px 11px;max-width:75%;text-align:center}
 #menu{position:absolute;inset:0;background:#09182ac4;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;pointer-events:auto;padding:calc(22px + env(safe-area-inset-top)) calc(15px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(15px + env(safe-area-inset-left))}
 #menu[hidden]{display:none}#menuCard{background:linear-gradient(155deg,#1c5270,#11283f);border:1px solid #ffffff42;border-radius:24px;padding:23px 29px;box-shadow:0 18px 55px #0008;text-align:center;width:min(450px,94%);max-height:100%;overflow:auto}
 #menuCard h1{font-size:27px;letter-spacing:.8px;margin:0 0 6px}#menuCard p{font-size:13px;color:#e2f1f4;margin:8px 0;line-height:1.5}#menuDesc{font-weight:700}#menuInstructions{background:#ffffff12;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.85;color:#f5f9fc;margin:12px 0}#menuStart:disabled{opacity:.72;filter:saturate(.7)}#menuStart{padding:13px 25px;background:#ffbc57;color:#1b2734;border:0;min-width:170px;box-shadow:0 4px 0 #c27d28}#menuFoot{color:#d4e4e8a9;font-size:10px;margin-top:13px}
-@media (orientation:portrait){#landscapeTip{display:block}#score{gap:10px}#score b{font-size:22px}#msg{top:calc(81px + env(safe-area-inset-top));max-width:92%}#menuCard{padding:24px 16px}#padArea{left:calc(10px + env(safe-area-inset-left));bottom:calc(32px + env(safe-area-inset-bottom));width:112px}#pad{width:104px;height:104px}#rightControls{right:calc(10px + env(safe-area-inset-right));bottom:calc(22px + env(safe-area-inset-bottom));width:166px}#touchbuttons{gap:6px}#touchbuttons button{height:66px}}
-@media (orientation:landscape) and (max-height:430px){#score{top:calc(3px + env(safe-area-inset-top));padding:4px 15px}#score b{font-size:19px}#msg{top:calc(51px + env(safe-area-inset-top));font-size:11px}#topTools{top:calc(5px + env(safe-area-inset-top))}#padArea{bottom:calc(8px + env(safe-area-inset-bottom))}#pad{width:116px;height:116px}#rightControls{bottom:calc(7px + env(safe-area-inset-bottom))}#touchbuttons button{height:60px}#menuCard{padding:15px 24px}#menuCard h1{font-size:24px}#assistHint{top:calc(82px + env(safe-area-inset-top))}#menuInstructions{font-size:11px;margin:7px 0;line-height:1.65}}
+@media (orientation:portrait){#landscapeTip{display:block}#score{gap:10px}#score b{font-size:22px}#msg{top:calc(81px + env(safe-area-inset-top));max-width:92%}#menuCard{padding:24px 16px}#padArea{left:calc(10px + env(safe-area-inset-left));bottom:calc(32px + env(safe-area-inset-bottom));width:112px}#pad{width:104px;height:104px}#rightControls{right:calc(10px + env(safe-area-inset-right));bottom:calc(22px + env(safe-area-inset-bottom));width:164px}#touchbuttons{gap:5px}#diveButton{width:72px;height:72px;margin-bottom:8px}#touchbuttons button{width:72px;height:72px}}
+@media (orientation:landscape) and (max-height:430px){#score{top:calc(3px + env(safe-area-inset-top));padding:4px 15px}#score b{font-size:19px}#msg{top:calc(51px + env(safe-area-inset-top));font-size:11px}#topTools{top:calc(5px + env(safe-area-inset-top))}#padArea{bottom:calc(8px + env(safe-area-inset-bottom))}#pad{width:116px;height:116px}#rightControls{bottom:calc(7px + env(safe-area-inset-bottom));width:156px}#diveButton{width:68px;height:68px;margin-bottom:6px}#touchbuttons button{width:68px;height:68px}#rightControls .actionIcon{font-size:21px}#rightControls .actionText{font-size:12px}#menuCard{padding:15px 24px}#menuCard h1{font-size:24px}#assistHint{top:calc(82px + env(safe-area-inset-top))}#menuInstructions{font-size:11px;margin:7px 0;line-height:1.65}}
 @media(orientation:portrait){#topTools{top:calc(124px + env(safe-area-inset-top))}#assistHint{top:calc(151px + env(safe-area-inset-top));left:42%}}
 @media(max-width:620px){#score{gap:7px;padding:5px 10px}#score .versus{font-size:9px}#touchcount{display:none}#topTools button{padding:7px 9px;font-size:10px}}
 </style>
@@ -55,9 +59,9 @@ button{border:1px solid #ffffff5b;border-radius:14px;background:#206f9e;color:wh
   <div id="landscapeTip">↻ 建議將手機橫向，球場與按鈕會更清楚</div>
   <div id="controls">
     <div id="padArea"><div class="controlTitle">自由移動</div><div id="pad" aria-label="移動搖桿"><div id="nub"></div></div></div>
-    <div id="rightControls"><div id="aimBox"><div id="aimLabel"><span>擊球方向 · 左右拖曳</span><span id="aimReadout">↑ 正中</span></div><div id="aimTrack" aria-label="調整扣球方向"><div id="aimNub"></div></div></div><div id="touchbuttons"><button data-action="jump">⬆ 跳躍</button><button data-action="hit">🏐 擊球</button></div></div>
+    <div id="rightControls"><button id="diveButton" class="circleAction" data-action="dive" aria-label="撲接救球"><span class="actionIcon">↘</span><span class="actionText" id="diveLabel">撲接</span></button><div id="touchbuttons"><button class="circleAction" data-action="jump" aria-label="跳躍"><span class="actionIcon">⬆</span><span class="actionText">跳躍</span></button><button class="circleAction" data-action="hit" aria-label="擊球"><span class="actionIcon" id="hitGlyph">🏐</span><span class="actionText" id="hitLabel">擊球</span></button></div></div>
   </div>
-  <div id="menu"><div id="menuCard"><h1 id="menuTitle">🏐 Volley 3D V1.8</h1><p id="menuDesc">手機專用 · 2v2 單機 AI 排球</p><div id="menuInstructions">👈 左側搖桿移動　👆 右側只需「跳躍」與「擊球」<br>🏐 接球、托球、扣球按下「擊球」後，只要排球碰到角色模型即可成功<br>🎯 拖曳滑桿調整進攻方向　🛡️ 跳起後在網前用手攔網<br>📍 發球拋球更高：端線外先按「拋球」，再抓時機按「擊球」<br>✨ 對方來球、我方接球或托球後，都顯示球路虛線與落點圈；右上可切換輔助<br>💥 第三觸強力扣殺：球更快、下墜更急；AI 偶爾會接漏或扣出界<br>🟢 容易接　🟡 需跑位　🔴 難接或可能出界<br>🏆 先得 11 分且領先 2 分獲勝</div><button id="menuStart" disabled>載入遊戲中…</button><div id="menuFoot">請保持網路連線，正在載入 3D 引擎…</div></div></div>
+  <div id="menu"><div id="menuCard"><h1 id="menuTitle">🏐 Volley 3D V2.0</h1><p id="menuDesc">手機專用 · 2v2 單機 AI 排球</p><div id="menuInstructions">👈 左側搖桿移動　👆 右側「撲接／跳躍／擊球」<br>🏐 接球、托球、扣球按下「擊球」後，只要排球碰到角色模型即可成功<br>↘ 撲接：配合搖桿方向短距離救球，無方向輸入時自動朝球撲；可自動接起低球<br>🎯 攻擊方向自動判斷對手空檔　🛡️ 跳起後在網前用手攔網<br>📍 發球：端線外按「拋球 → 跳躍 → 擊球」完成跳發；也可「拋球 → 擊球」站立發球<br>✨ 對方來球、我方接球或托球後，都顯示球路虛線與落點圈；右上可切換輔助<br>💥 第三觸強力扣殺：球更快、下墜更急；AI 偶爾會接漏或扣出界<br>🟢 容易接　🟡 需跑位　🔴 難接或可能出界<br>🏆 先得 11 分且領先 2 分獲勝</div><button id="menuStart" disabled>載入遊戲中…</button><div id="menuFoot">請保持網路連線，正在載入 3D 引擎…</div></div></div>
 </div>
 <script>
 window.addEventListener('load',()=>{
@@ -81,7 +85,11 @@ const netMat=new THREE.MeshBasicMaterial({color:0xf4faff,transparent:true,opacit
 // V1.5: 上拋最高點約 3.54m；托球軌跡更高，雙人進攻採明確的接球責任分配。
 const GRAV=11.8, END_LINE=8.75, SERVE_MIN=9.08, HAND_R=.19, CONTACT_EPS=.21, NET_TOP=2.37, MAX_FACE_ANGLE=Math.PI/4;
 const TOSS_SPEED=6.9, SERVE_TIME_LIMIT=1.75;
+// V2.0：跳躍發球必須在底線外起跳，空中允許身體越過底線；跳發成功後有較快的球速。
+const JUMP_SERVE_SPEED_TIME=1.10, JUMP_SERVE_GRAV=14.0;
 // V1.8：扣殺使用較高的專用下墜加速度，縮短過網飛行時間，但仍經由 arcOverNet 保障網頂高度。
+// V1.9：短距離前撲、低球實體碰撞救球及回復時間，避免無限連續撲接。
+const DIVE_LUNGE=.40, DIVE_CONTACT_END=.58, DIVE_DURATION=1.08, DIVE_COOLDOWN=1.7, DIVE_SPEED=8.4;
 const SPIKE_GRAV=23.6; // 一般來球為 11.8；扣球使用較陡的高速下墜球路
 // 每次 AI 真正觸球才抽一次失誤，不在逐影格內抽；隊友失誤率較低，避免玩家一直被拖累。
 const AI_ERROR_CHANCE={ally:.025,opponent:.045};
@@ -91,24 +99,25 @@ const HIT_ACTIVE_START=0, HIT_ACTIVE_END=.49; // 按下立即有效，短時間�
 const up=new THREE.Vector3(0,1,0), scratch=new THREE.Vector3(), handWorld=new THREE.Vector3(), prevBall=new THREE.Vector3();
 function makeActor(color,x,z,hasMarker=false){
   const root=new THREE.Group();scene.add(root);root.position.set(x,0,z);
+  const rig=new THREE.Group();root.add(rig);
   const jersey=new THREE.MeshStandardMaterial({color,roughness:.62});
   const skin=new THREE.MeshStandardMaterial({color:0xffd4ad,roughness:.67});
-  const body=new THREE.Mesh(new THREE.CapsuleGeometry(.34,.6,5,10),jersey);body.position.y=.87;body.castShadow=true;root.add(body);
-  const head=new THREE.Mesh(new THREE.SphereGeometry(.29,16,12),skin);head.position.y=1.58;head.castShadow=true;root.add(head);
+  const body=new THREE.Mesh(new THREE.CapsuleGeometry(.34,.6,5,10),jersey);body.position.y=.87;body.castShadow=true;rig.add(body);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.29,16,12),skin);head.position.y=1.58;head.castShadow=true;rig.add(head);
   const legs=[];
   for(const xoff of [-.22,.22]){
     const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.12,.34,4,8),new THREE.MeshStandardMaterial({color:0x253b54}));
-    leg.position.set(xoff,.28,0);leg.castShadow=true;root.add(leg);legs.push(leg);
+    leg.position.set(xoff,.28,0);leg.castShadow=true;rig.add(leg);legs.push(leg);
   }
   const hands=[],arms=[];
   for(const sign of [-1,1]){
     const hand=new THREE.Mesh(new THREE.SphereGeometry(HAND_R,14,10),skin);
-    hand.castShadow=true;root.add(hand);hands.push(hand);
+    hand.castShadow=true;rig.add(hand);hands.push(hand);
     const arm=new THREE.Mesh(new THREE.CylinderGeometry(.105,.095,1,8),skin);
-    arm.castShadow=true;root.add(arm);arms.push(arm);
+    arm.castShadow=true;rig.add(arm);arms.push(arm);
   }
   if(hasMarker){const ring=new THREE.Mesh(new THREE.TorusGeometry(.53,.055,8,36),new THREE.MeshBasicMaterial({color:0xffea63}));ring.rotation.x=Math.PI/2;ring.position.y=.045;root.add(ring);}
-  return {root,body,head,legs,hands,arms,team:z>0?0:1,jumpV:0,air:0,cool:0,swingTime:-1,swingType:'',swingConnected:false,blockArmed:0,missFlightId:-1};
+  return {root,rig,body,head,legs,hands,arms,diveTime:-1,diveCooldown:0,diveDirX:0,diveDirZ:-1,diveConnected:false,team:z>0?0:1,jumpV:0,air:0,cool:0,swingTime:-1,swingType:'',swingConnected:false,blockArmed:0,missFlightId:-1,serveJumpValid:false};
 }
 const actors=[makeActor(0xf68a4e,-2.2,5.6,true),makeActor(0xf6bc56,2.5,4.4),makeActor(0x368adf,-2.3,-5.3),makeActor(0x56b3ef,2.2,-4.2)];
 const ballMesh=new THREE.Mesh(new THREE.SphereGeometry(.26,20,14),new THREE.MeshStandardMaterial({color:0xfff0b2,roughness:.56}));ballMesh.castShadow=true;scene.add(ballMesh);
@@ -138,9 +147,10 @@ for(const z of [-9.38,9.38]){
   zone.rotation.x=-Math.PI/2;zone.position.set(0,.024,z);scene.add(zone);
 }
 const prompt=document.getElementById('msg'),blue=document.getElementById('blue'),red=document.getElementById('red'),count=document.getElementById('touchcount'),hitButton=document.querySelector('[data-action="hit"]');
+const diveButton=document.getElementById('diveButton'),diveLabel=document.getElementById('diveLabel'),jumpButton=document.querySelector('[data-action="jump"]'),hitGlyph=document.getElementById('hitGlyph'),hitLabel=document.getElementById('hitLabel');
 const menu=document.getElementById('menu'),menuTitle=document.getElementById('menuTitle'),menuDesc=document.getElementById('menuDesc'),menuStart=document.getElementById('menuStart');
 let scores=[0,0],touches=[0,0],lastTeam=-1,lastTouchActor=-1,lastTouchMode='',phase='idle',serveTeam=0,serveState='ready',serveClock=0,pointClock=0;
-let aim=0,clock=performance.now(),paused=false;
+let clock=performance.now(),paused=false;
 const assistButton=document.getElementById('assistBtn'),assistHint=document.getElementById('assistHint');
 const ASSIST_MODES=['full','landing','off'],ASSIST_NAMES={full:'完整',landing:'落點',off:'關閉'};
 let assistMode='full';
@@ -171,12 +181,28 @@ function say(s){prompt.textContent=s;}
 function updateHitButton(){
   const myServe=phase==='serve'&&serveTeam===0;
   hitButton.disabled=phase==='serve'&&serveTeam!==0;
-  const label=myServe&&serveState==='ready'?'🙌 拋球':hitButton.disabled?'⏳ 等待':'🏐 擊球';
-  hitButton.textContent=label;
-  hitButton.setAttribute('aria-label',myServe&&serveState==='ready'?'拋球':hitButton.disabled?'等待 AI 發球':'擊球');
+  jumpButton.disabled=phase==='serve'&&(!myServe||serveState!=='toss');
+  const tossing=myServe&&serveState==='ready';
+  hitGlyph.textContent=tossing?'🙌':hitButton.disabled?'⏳':'🏐';
+  hitLabel.textContent=tossing?'拋球':hitButton.disabled?'等待':'擊球';
+  hitButton.setAttribute('aria-label',tossing?'拋球':hitButton.disabled?'等待 AI 發球':'擊球');
+  jumpButton.setAttribute('aria-label',jumpButton.disabled?'拋球後才能跳躍發球':'跳躍');
 }
 function easePose(x){const t=THREE.MathUtils.clamp(x,0,1);return t*t*(3-2*t);}
 function poseHands(p){
+  const d=p.diveTime;
+  const diving=d>=0;
+  if(diving){
+    const fall=easePose(d/.22);
+    const recover=1-easePose((d-.70)/.32);
+    const tilt=1.22*fall*recover;
+    const yaw=p.root.rotation.y,cy=Math.cos(yaw),sy=Math.sin(yaw);
+    const lx=cy*p.diveDirX-sy*p.diveDirZ;
+    const lz=sy*p.diveDirX+cy*p.diveDirZ;
+    p.rig.rotation.x=tilt*lz;
+    p.rig.rotation.z=-tilt*lx;
+    p.rig.position.y=.25*fall*recover;
+  }else{p.rig.rotation.set(0,0,0);p.rig.position.y=0;}
   const t=p.swingTime,active=t>=0;
   const strength=active?Math.min(1,t/.14,Math.max(0,(.51-t)/.16)):0;
   let mode=active?p.swingType:'idle';
@@ -192,7 +218,8 @@ function poseHands(p){
     const sign=h===0?-1:1;
     const rest=new THREE.Vector3(sign*.47,.94,-.10);
     let target=rest.clone(),blend=strength;
-    if(spike){
+    if(diving){target.set(sign*.30,1.57,-.72);blend=1;}
+    else if(spike){
       const windup=keyframes[0][h],contact=keyframes[1][h],follow=keyframes[2][h];
       if(t<.115)target.copy(rest).lerp(windup,easePose(t/.115));
       else if(t<.235)target.copy(windup).lerp(contact,easePose((t-.115)/.120));
@@ -222,7 +249,7 @@ actors.forEach((p,i)=>{p.root.rotation.y=i<2?0:Math.PI;poseHands(p);});
 function resetPositions(team){
   const coords=[[-2.2,5.6],[2.5,4.4],[-2.3,-5.3],[2.2,-4.2]];
   coords[team===0?0:2]=team===0?[-1.8,9.58]:[-1.8,-9.58];
-  actors.forEach((p,i)=>{p.root.position.set(coords[i][0],0,coords[i][1]);p.root.rotation.y=i<2?0:Math.PI;p.air=p.jumpV=p.cool=0;p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;p.missFlightId=-1;poseHands(p);});
+  actors.forEach((p,i)=>{p.root.position.set(coords[i][0],0,coords[i][1]);p.root.rotation.y=i<2?0:Math.PI;p.air=p.jumpV=p.cool=0;p.diveTime=-1;p.diveCooldown=0;p.diveConnected=false;p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;p.missFlightId=-1;p.serveJumpValid=false;poseHands(p);});
 }
 function serverId(){return serveTeam===0?0:2;}
 function isBehindLine(p){return p.team===0?p.root.position.z>=SERVE_MIN:p.root.position.z<=-SERVE_MIN;}
@@ -231,7 +258,7 @@ function newServe(team){
   serveTeam=team;serveState='ready';serveClock=0;touches=[0,0];lastTeam=-1;lastTouchActor=-1;lastTouchMode='';
   nextBallFlight();count.textContent='觸球 0/3';resetPositions(team);phase='serve';updateHitButton();
   ball.pos.copy(heldBallPosition(actors[serverId()]));prevBall.copy(ball.pos);ball.vel.set(0,0,0);ball.gravity=GRAV;smashFX.visible=false;smashFXTime=0;
-  say(team===0?'發球：請站在端線外，先按「拋球」！':'AI 對手準備在端線外發球…');
+  say(team===0?'發球：端線外「拋球 → 跳躍 → 擊球」，也可直接站立擊球！':'AI 對手準備在端線外發球…');
 }
 // 以落點＋飛行時間決定球速；所有攻守球路都從真實手部觸球位置發出。
 function arcTo(x,z,y,seconds,gravity=GRAV){
@@ -287,7 +314,32 @@ function pointSegmentDistanceSq(px,py,pz,ax,ay,az,bx,by,bz){
   const x=px-ax-dx*t,y=py-ay-dy*t,z=pz-az-dz*t;
   return x*x+y*y+z*z;
 }
+function diveTouchesBall(p,instant=false){
+  // 低空撲救有效期與真正角色姿態一致；不給無限距離的磁吸判定。
+  if(p.diveTime<0||p.diveTime>DIVE_CONTACT_END||p.diveConnected||ball.pos.y>1.45)return false;
+  p.root.updateMatrixWorld(true);
+  const visual=p.rig;
+  const torsoA=visual.localToWorld(new THREE.Vector3(0,.57,0));
+  const torsoB=visual.localToWorld(new THREE.Vector3(0,1.17,0));
+  const head=visual.localToWorld(new THREE.Vector3(0,1.58,-.12));
+  const handPositions=p.hands.map(h=>{const result=new THREE.Vector3();h.getWorldPosition(result);return result;});
+  const arms=handPositions.map((hand,h)=>[visual.localToWorld(new THREE.Vector3((h===0?-1:1)*.38,1.30,0)),hand]);
+  const legs=[-.22,.22].map(x=>[visual.localToWorld(new THREE.Vector3(x,.11,0)),visual.localToWorld(new THREE.Vector3(x,.45,0))]);
+  const from=instant?ball.pos:prevBall,to=ball.pos;
+  const steps=instant?1:Math.min(20,Math.max(1,Math.ceil(from.distanceTo(to)/.07)));
+  const tol=ball.radius+.13;
+  for(let i=0;i<=steps;i++){
+    const u=i/steps,bx=from.x+(to.x-from.x)*u,by=from.y+(to.y-from.y)*u,bz=from.z+(to.z-from.z)*u;
+    if(pointSegmentDistanceSq(bx,by,bz,torsoA.x,torsoA.y,torsoA.z,torsoB.x,torsoB.y,torsoB.z)<=(.34+tol)**2)return true;
+    if((bx-head.x)**2+(by-head.y)**2+(bz-head.z)**2<=(.29+tol)**2)return true;
+    for(const hand of handPositions)if((bx-hand.x)**2+(by-hand.y)**2+(bz-hand.z)**2<=(HAND_R+tol)**2)return true;
+    for(const [a,b] of arms)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.105+tol)**2)return true;
+    for(const [a,b] of legs)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.12+tol)**2)return true;
+  }
+  return false;
+}
 function modelTouchesBall(p,instant=false){
+  if(p.diveTime>=0)return diveTouchesBall(p,instant);
   const pos=p.root.position,yaw=p.root.rotation.y,cy=Math.cos(yaw),sy=Math.sin(yaw);
   const begin=instant?ball.pos:prevBall,end=ball.pos;
   const distance=Math.hypot(end.x-begin.x,end.y-begin.y,end.z-begin.z);
@@ -329,16 +381,30 @@ function handTouchesBall(p,handIndex){
   return handWorld.distanceToSquared(nearest)<=radius*radius;
 }
 // 真正擊球規則集中於此；切換碰撞判定不會改變三次觸球、發球或同人連擊規則。
+function autoTargetX(team,serve=false){
+  // 不需要滑桿：自動瞄準對面兩名球員防守相對薄弱的區域。
+  const enemy=actors.filter(a=>a.team!==team),z=(team===0?-1:1)*(serve?5.1:5.15);
+  let best=0,score=-Infinity;
+  for(const x of [-3.7,-2.1,0,2.1,3.7]){
+    const nearest=Math.min(...enemy.map(p=>Math.hypot(x-p.root.position.x,z-p.root.position.z)));
+    const value=nearest-.055*Math.abs(x-ball.pos.x)-.06*Math.abs(x);
+    if(value>score){score=value;best=x;}
+  }
+  return best;
+}
 function resolveContact(p,mode){
   const id=actors.indexOf(p),team=p.team;
   if(phase==='serve'){
     if(serveState!=='toss'||id!==serverId())return false;
-    if(!isBehindLine(p)){score(1-team,'發球踩線違例');return true;}
+    const jumping=p.air>.10&&p.serveJumpValid;
+    if(!isBehindLine(p)&&!jumping){score(1-team,'發球踩線違例');return true;}
     nextBallFlight();lastTeam=team;lastTouchActor=id;lastTouchMode='serve';touches=[0,0];
     const towardZ=team===0?-5.1:5.1;
-    arcOverNet(aim*3.0,towardZ,1.05,1.55);
+    if(jumping)arcOverNet(autoTargetX(team,true),towardZ,.95,JUMP_SERVE_SPEED_TIME,JUMP_SERVE_GRAV);
+    else arcOverNet(autoTargetX(team,true),towardZ,1.05,1.55);
     serveState='done';phase='play';updateHitButton();p.cool=.50;p.swingTime=-1;
-    say(team===0?'發球成功！準備防守':'AI 已發球！準備接球');
+    if(jumping)triggerSmashFX();
+    say(team===0?(jumping?'💥 跳躍發球成功！':'發球成功！準備防守'):'AI 已發球！準備接球');
     return true;
   }
   if(phase!=='play')return false;
@@ -366,6 +432,7 @@ function resolveContact(p,mode){
     say(team===0?'AI 隊友接球失誤！':'AI 對手失誤，沒碰好球！');
     return true;
   }
+  if(id===0&&p.diveTime>=0)p.diveConnected=true;
   if(lastTeam!==team)touches[team]=0;
   nextBallFlight();touches[team]++;lastTeam=team;lastTouchActor=id;lastTouchMode=mode;
   count.textContent=`${team===0?'我方':'對方'}觸球 ${touches[team]}/3`;
@@ -392,7 +459,7 @@ function resolveContact(p,mode){
     arcTo(x,z,3.15,1.42);
     say(team===0?(mateId===0?'AI 高托球！跑向網前準備扣殺':'你已高托球！AI 隊友準備扣殺'):'AI 高托球，準備進攻！');
   }else{
-    const x=aiError?(Math.random()<.5?-7.45:7.45):(team===0?aim*4.15:(Math.random()-.5)*7.1);
+    const x=aiError?(Math.random()<.5?-7.45:7.45):(team===0?autoTargetX(team):(Math.random()-.5)*7.1);
     const z=team===0?-5.15:5.15;
     // 相同過網裕度下，以較高的扣球下墜加速度縮短飛行時間，提高水平球速。
     arcOverNet(x,z,.60,.66,SPIKE_GRAV);
@@ -409,6 +476,10 @@ function handContact(p,handIndex){
 function contactCheck(){
   for(const p of actors){
     if(p.cool>0)continue;
+    if(p.diveTime>=0){
+      if(phase==='play'&&lastTeam!==p.team&&diveTouchesBall(p)&&resolveContact(p,'receive'))return;
+      continue;
+    }
     const swing=p.swingTime>=HIT_ACTIVE_START&&p.swingTime<=HIT_ACTIVE_END;
     const block=p.blockArmed>0&&p.air>.16&&Math.abs(p.root.position.z)<2.1;
     if(swing){
@@ -433,14 +504,51 @@ function tossServe(p){
   const throwVector=new THREE.Vector3(0,TOSS_SPEED,-.22).applyAxisAngle(up,p.root.rotation.y);
   ball.vel.copy(throwVector);ball.gravity=GRAV;p.swingTime=-1;
   updateHitButton();
-  if(p.team===0)say('已拋球！請再按「擊球」揮手發球，切勿踩入端線');
+  p.serveJumpValid=false;
+  if(p.team===0)say('已拋球！可以先按「跳躍」再按「擊球」跳發，也可直接站立發球');
   return true;
 }
 function faceTowardCourt(p){p.root.rotation.y=p.team===0?0:Math.PI;}
+function refreshDiveButton(){
+  const p=actors[0];
+  const allowed=phase==='play'&&!paused&&p.diveTime<0&&p.diveCooldown<=0&&p.cool<=0&&p.air<=.01&&lastTeam!==0;
+  diveButton.disabled=!allowed;
+  diveLabel.textContent=p.diveTime>=0?'撲接中':p.diveCooldown>0?`冷卻${p.diveCooldown.toFixed(1)}s`:'撲接';
+  diveButton.setAttribute('aria-label',p.diveTime>=0?'正在撲接':p.diveCooldown>0?`撲接冷卻 ${p.diveCooldown.toFixed(1)} 秒`:'撲接救球');
+}
+function startDive(p){
+  if(phase!=='play'||p.diveTime>=0||p.diveCooldown>0||p.cool>0||p.air>.01||lastTeam===p.team)return false;
+  const x=(keys.d?1:0)-(keys.a?1:0)+stick.x;
+  const z=(keys.s?1:0)-(keys.w?1:0)+stick.z;
+  let dx=x,dz=z,len=Math.hypot(dx,dz);
+  if(len<.15){
+    // 沒推搖桿時，自動朝來球的低空預測位置撲過去。
+    const point=predictIntercept(0.65);
+    dx=point.x-p.root.position.x;dz=point.z-p.root.position.z;
+    len=Math.hypot(dx,dz);
+  }
+  if(len<.05){dx=-Math.sin(p.root.rotation.y);dz=-Math.cos(p.root.rotation.y);len=1;}
+  p.diveDirX=dx/len;p.diveDirZ=dz/len;
+  p.diveTime=0;p.diveCooldown=DIVE_COOLDOWN;p.diveConnected=false;
+  p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;
+  faceBall(p);poseHands(p);
+  say('↘ 撲接！低球碰到身體即可自動救起，起身後才能再次行動');
+  refreshDiveButton();return true;
+}
 function userAction(action){
   if(paused)return;
   const p=actors[0];
+  if(action==='dive'){startDive(p);return;}
+  if(p.diveTime>=0)return;
   if(action==='jump'){
+    if(phase==='serve'&&serveTeam===0){
+      if(serveState==='toss'&&p.air<=.01){
+        if(!isBehindLine(p)){say('跳發需在端線外起跳，請先退後');return;}
+        p.serveJumpValid=true;p.jumpV=6.6;p.blockArmed=0;faceTowardCourt(p);
+        say('跳起來了！在空中球碰到角色時按「擊球」發球');
+      }
+      return;
+    }
     if(phase==='play'&&p.air<=.01){p.jumpV=6.6;p.blockArmed=1.05;faceBall(p);say('跳躍！靠近網前以雙手攔網，也可以在空中擊球');}
     return;
   }
@@ -449,8 +557,8 @@ function userAction(action){
     if(serveTeam!==0)return;
     if(serveState==='ready')tossServe(p);
     else if(serveState==='toss'){
-      if(!isBehindLine(p)){score(1,'發球踩線違例');return;}
-      if(beginSwing(p,'serve')){poseHands(p);if(modelTouchesBall(p,true))resolveContact(p,'serve');else say('揮擊發球！球碰到角色即可擊中');}
+      if(!isBehindLine(p)&&!(p.air>.10&&p.serveJumpValid)){score(1,'發球踩線違例');return;}
+      if(beginSwing(p,'serve')){poseHands(p);if(modelTouchesBall(p,true))resolveContact(p,'serve');else say(p.air>.10?'空中揮擊！等待球碰到角色':'揮擊發球！球碰到角色即可擊中');}
     }
     return;
   }
@@ -469,8 +577,8 @@ function userAction(action){
   }
 }
 addEventListener('keydown',e=>{
-  const k=e.key.toLowerCase();if([' ','arrowleft','arrowright'].includes(k))e.preventDefault();
-  if(!keys[k]){if(k==='j'||k==='k'||k==='l')userAction('hit');if(k===' ')userAction('jump');if(k==='p')togglePause();if(k==='r')start();}
+  const k=e.key.toLowerCase();if([' '].includes(k))e.preventDefault();
+  if(!keys[k]){if(k==='j'||k==='k'||k==='l')userAction('hit');if(k===' ')userAction('jump');if(k==='f')userAction('dive');if(k==='p')togglePause();if(k==='r')start();}
   keys[k]=true;
 });addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
 const pad=document.getElementById('pad'),nub=document.getElementById('nub');let padPointer=null;
@@ -479,11 +587,6 @@ pad.addEventListener('pointerdown',e=>{if(padPointer!==null)return;e.preventDefa
 pad.addEventListener('pointermove',e=>{if(padPointer===e.pointerId)setStick(e);});
 function clearStick(e){if(e&&e.pointerId!==padPointer)return;padPointer=null;stick.x=stick.z=0;nub.style.transform='translate(0,0)';}
 pad.addEventListener('pointerup',clearStick);pad.addEventListener('pointercancel',clearStick);pad.addEventListener('lostpointercapture',clearStick);
-const aimTrack=document.getElementById('aimTrack'),aimNub=document.getElementById('aimNub'),aimReadout=document.getElementById('aimReadout');
-function paintAim(){aimNub.style.left=(50+aim*45)+'%';aimReadout.textContent=aim<-.22?'↖ 左側':aim>.22?'右側 ↗':'↑ 正中';}
-function setAimTouch(e){const r=aimTrack.getBoundingClientRect();aim=THREE.MathUtils.clamp((e.clientX-r.left-r.width/2)/(r.width*.44),-1,1);paintAim();}
-aimTrack.addEventListener('pointerdown',e=>{e.preventDefault();aimTrack.setPointerCapture(e.pointerId);setAimTouch(e);});
-aimTrack.addEventListener('pointermove',e=>{if(aimTrack.hasPointerCapture(e.pointerId))setAimTouch(e);});paintAim();
 document.querySelectorAll('[data-action]').forEach(b=>{
   const action=b.dataset.action;
   b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);b.classList.add('pressed');userAction(action);});
@@ -664,12 +767,20 @@ function update(dt){
   if(paused||phase==='idle'||phase==='finished')return;
   if(smashFXTime>0)smashFXTime=Math.max(0,smashFXTime-dt);
   const p=actors[0],x=(keys.d?1:0)-(keys.a?1:0)+stick.x,z=(keys.s?1:0)-(keys.w?1:0)+stick.z,len=Math.hypot(x,z);
-  if(len>.08)moveActor(p,p.root.position.x+x/len*5.5*dt,p.root.position.z+z/len*5.5*dt,dt,5.5);
-  if(keys.arrowleft)aim=Math.max(-1,aim-dt);if(keys.arrowright)aim=Math.min(1,aim+dt);
-  if(keys.arrowleft||keys.arrowright)paintAim();
+  if(p.diveTime<0&&len>.08)moveActor(p,p.root.position.x+x/len*5.5*dt,p.root.position.z+z/len*5.5*dt,dt,5.5);
+  if(p.diveTime>=0){
+    p.diveTime+=dt;
+    if(p.diveTime<DIVE_LUNGE){
+      const speed=DIVE_SPEED*Math.sin(Math.PI*Math.min(1,p.diveTime/DIVE_LUNGE));
+      moveActor(p,p.root.position.x+p.diveDirX*speed*dt,p.root.position.z+p.diveDirZ*speed*dt,dt,speed);
+    }
+    if(p.diveTime>=DIVE_DURATION){p.diveTime=-1;p.diveConnected=false;}
+  }
+  p.diveCooldown=Math.max(0,p.diveCooldown-dt);
+  refreshDiveButton();
   for(const actor of actors){
     actor.cool=Math.max(0,actor.cool-dt);actor.blockArmed=Math.max(0,actor.blockArmed-dt);
-    if(actor.air>0||actor.jumpV>0){actor.air=Math.max(0,actor.air+actor.jumpV*dt);actor.jumpV-=GRAV*dt;if(actor.air===0)actor.jumpV=0;}
+    if(actor.air>0||actor.jumpV>0){actor.air=Math.max(0,actor.air+actor.jumpV*dt);actor.jumpV-=GRAV*dt;if(actor.air===0){actor.jumpV=0;actor.serveJumpValid=false;}}
     actor.root.position.y=actor.air;
     if(actor.swingTime>=0){actor.swingTime+=dt;if(actor.swingTime>.62){actor.swingTime=-1;if(actor===actors[0]&&phase==='play'&&!actor.swingConnected)say('揮空！請在球碰到角色時按「擊球」');actor.swingConnected=false;}}
   }
@@ -739,20 +850,22 @@ if(new URLSearchParams(location.search).has('debug'))window.__volleyDebug={
   get camera(){return {x:camera.position.x,y:camera.position.y,z:camera.position.z}},
   get ball(){return {x:ball.pos.x,y:ball.pos.y,z:ball.pos.z}},
   get rules(){return {phase,serveTeam,serveState,touches:[...touches],lastTeam,lastTouchActor,lastTouchMode,scores:[...scores],paused,hitLabel:hitButton.textContent};},
-  actors,ballObject:ball,update,beginSwing,handContact,modelTouchesBall,resolveContact,contactCheck,poseHands,arcTo,arcOverNet,faceBall,newServe,tossServe,chooseMode,chooseBlueReceiver,ai,predictIntercept,score,userAction,
+  actors,ballObject:ball,update,beginSwing,handContact,modelTouchesBall,resolveContact,contactCheck,poseHands,arcTo,arcOverNet,faceBall,newServe,tossServe,chooseMode,chooseBlueReceiver,ai,predictIntercept,score,userAction,startDive,diveTouchesBall,autoTargetX,refreshDiveButton,
   getHand(id,handIndex){actors[id].root.updateMatrixWorld(true);const v=new THREE.Vector3();actors[id].hands[handIndex].getWorldPosition(v);return {x:v.x,y:v.y,z:v.z};},
   get tactics(){return {flightId,blueReceiver:blueReceiveChoice?.actorId??null,passPlan:passPlan?{...passPlan}:null}},
   get assist(){return {mode:assistMode,visible:landingRing.visible,trailCount:trailPieces.filter(p=>p.visible).length,landing:assistPrediction?.landing??null,netBounces:assistPrediction?.netBounces??0,difficulty:assistDifficulty,hint:assistHint.textContent};},
   setAssistMode(mode){if(!ASSIST_MODES.includes(mode))throw new Error("invalid assist mode");assistMode=mode;paintAssistButton();assistRefreshClock=0;hideAssist();},
   predictBallFlight,trajectoryAt,predictReachPoint,difficultyFor,refreshAssist,
-  get physics(){return {tossSpeed:TOSS_SPEED,tossApex:1.52+TOSS_SPEED*TOSS_SPEED/(2*GRAV),spikeGravity:SPIKE_GRAV,flightGravity:ball.gravity,spikeSpeed:Math.hypot(ball.vel.x,ball.vel.y,ball.vel.z),handTolerance:{...HAND_TOLERANCE},modelContactEps:MODEL_CONTACT_EPS,prevBall:[prevBall.x,prevBall.y,prevBall.z]}},
+  get serveJump(){const p=actors[0];return {air:p.air,takeoffValid:p.serveJumpValid,jumpVelocity:p.jumpV,jumpDisabled:jumpButton.disabled,hitLabel:hitButton.textContent}},
+  get physics(){return {tossSpeed:TOSS_SPEED,tossApex:1.52+TOSS_SPEED*TOSS_SPEED/(2*GRAV),jumpServeGravity:JUMP_SERVE_GRAV,spikeGravity:SPIKE_GRAV,flightGravity:ball.gravity,spikeSpeed:Math.hypot(ball.vel.x,ball.vel.y,ball.vel.z),handTolerance:{...HAND_TOLERANCE},modelContactEps:MODEL_CONTACT_EPS,prevBall:[prevBall.x,prevBall.y,prevBall.z]}},
+  get dive(){const p=actors[0];return {time:p.diveTime,cooldown:p.diveCooldown,connected:p.diveConnected,dx:p.diveDirX,dz:p.diveDirZ,buttonDisabled:diveButton.disabled,buttonText:diveButton.textContent};},
   get aiMistakes(){return {...AI_ERROR_CHANCE}},
   get spikeFX(){return {visible:smashFX.visible,remaining:smashFXTime}},
   setPreviousBall(x,y,z){prevBall.set(x,y,z);},
-  setRally(state){phase='play';paused=false;ball.pos.set(...state.ballPos);ball.vel.set(...(state.ballVel||[0,0,0]));ball.gravity=state.gravity||GRAV;prevBall.copy(ball.pos);touches=[...(state.touches||[0,0])];lastTeam=state.lastTeam??-1;lastTouchActor=state.lastTouchActor??-1;lastTouchMode=state.lastTouchMode??'';nextBallFlight();actors.forEach(p=>{p.cool=0;p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;p.missFlightId=-1;poseHands(p);});}
+  setRally(state){phase='play';paused=false;ball.pos.set(...state.ballPos);ball.vel.set(...(state.ballVel||[0,0,0]));ball.gravity=state.gravity||GRAV;prevBall.copy(ball.pos);touches=[...(state.touches||[0,0])];lastTeam=state.lastTeam??-1;lastTouchActor=state.lastTouchActor??-1;lastTouchMode=state.lastTouchMode??'';nextBallFlight();actors.forEach(p=>{p.cool=0;p.diveTime=-1;p.diveCooldown=0;p.diveConnected=false;p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;p.missFlightId=-1;p.serveJumpValid=false;poseHands(p);});}
 };
-menuStart.disabled=false;menuStart.textContent='開始比賽';
-document.getElementById('menuFoot').textContent='V1.8 高速扣殺 + 揮臂動畫 + AI 偶發失誤 · 需連線載入 Three.js';
+menuStart.disabled=false;menuStart.textContent='開始比賽';refreshDiveButton();
+document.getElementById('menuFoot').textContent='V2.0 三個圓形按鍵 + 拋球／跳躍／擊球發球 · 需連線載入 Three.js';
 </script>
 </body>
 </html>
