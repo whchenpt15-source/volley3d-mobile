@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<title>Volley 3D Mobile V2.4 — 攔網與高速球防守平衡</title>
+<title>Volley 3D Mobile V2.5 — 精緻角色比例與發球動作</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;color:#fff;font-synthesis:none;-webkit-tap-highlight-color:transparent}
 *{box-sizing:border-box}
@@ -71,7 +71,7 @@ button{border:1px solid #ffffff5b;border-radius:14px;background:#206f9e;color:wh
     <div id="padArea"><div class="controlTitle">自由移動</div><div id="pad" aria-label="移動搖桿"><div id="nub"></div></div></div>
     <div id="rightControls"><button id="diveButton" class="circleAction" data-action="dive" aria-label="撲接救球"><span class="actionIcon">↘</span><span class="actionText" id="diveLabel">撲接</span></button><div id="touchbuttons"><button class="circleAction" data-action="jump" aria-label="跳躍"><span class="actionIcon">⬆</span><span class="actionText">跳躍</span></button><button class="circleAction" data-action="hit" aria-label="擊球"><span class="actionIcon" id="hitGlyph">🏐</span><span class="actionText" id="hitLabel">擊球</span></button></div></div>
   </div>
-  <div id="menu"><div id="menuCard"><h1 id="menuTitle">🏐 Volley 3D V2.4</h1><p id="menuDesc">18×9m 正式場地 · 3m 攻擊線 · 2v2／6v6 AI 排球</p><div id="modePicker"><button id="choose2" class="selected" type="button">2v2 雙人制</button><button id="choose6" type="button">6v6 六人制</button></div><div id="menuInstructions">👈 左側搖桿移動　👆 右側「撲接／跳躍／擊球」<br>🏐 接球、托球、扣球按下「擊球」後，只要排球碰到角色模型即可成功<br>↘ 撲接：配合搖桿方向短距離救球，無方向輸入時自動朝球撲；可自動接起低球<br>🎯 第三觸扣殺長按「擊球」會出現箭頭，左右／上下滑動瞄準，放開擊球；輕點仍會自動瞄準　🛡️ 跳起後在網前用手攔網<br>📍 發球：端線外按「拋球 → 跳躍 → 擊球」完成跳發；也可「拋球 → 擊球」站立發球<br>✨ 對方來球、我方接球或托球後，都顯示球路虛線與落點圈；右上可切換輔助<br>💥 第三觸強力扣殺：球更快、下墜更急；AI 偶爾會接漏或扣出界<br>🟢 容易接　🟡 需跑位　🔴 難接或可能出界<br>🔁 搶回發球權才輪轉；六人制由發球位球員發球，非玩家發球時由 AI 執行<br>📐 正規球場 18×9 公尺，每側 9×9 公尺；網前 3 公尺攻擊線與正式端線／邊線判定<br>🏆 2v2 先得 11 分／6v6 先得 25 分，均需領先 2 分</div><button id="menuStart" disabled>載入遊戲中…</button><div id="menuFoot">請保持網路連線，正在載入 3D 引擎…</div></div></div>
+  <div id="menu"><div id="menuCard"><h1 id="menuTitle">🏐 Volley 3D V2.5</h1><p id="menuDesc">18×9m 正式場地 · 3m 攻擊線 · 2v2／6v6 AI 排球</p><div id="modePicker"><button id="choose2" class="selected" type="button">2v2 雙人制</button><button id="choose6" type="button">6v6 六人制</button></div><div id="menuInstructions">👈 左側搖桿移動　👆 右側「撲接／跳躍／擊球」<br>🏐 接球、托球、扣球按下「擊球」後，只要排球碰到角色模型即可成功<br>↘ 撲接：配合搖桿方向短距離救球，無方向輸入時自動朝球撲；可自動接起低球<br>🎯 第三觸扣殺長按「擊球」會出現箭頭，左右／上下滑動瞄準，放開擊球；輕點仍會自動瞄準　🛡️ 跳起後在網前用手攔網<br>📍 發球：有持球預備、上拋與完整揮臂動畫；端線外「拋球 → 跳躍 → 擊球」跳發，或「拋球 → 擊球」站立發球<br>✨ 對方來球、我方接球或托球後，都顯示球路虛線與落點圈；右上可切換輔助<br>💥 第三觸強力扣殺：球更快、下墜更急；AI 偶爾會接漏或扣出界<br>🟢 容易接　🟡 需跑位　🔴 難接或可能出界<br>🔁 搶回發球權才輪轉；六人制由發球位球員發球，非玩家發球時由 AI 執行<br>📐 正規球場 18×9 公尺，每側 9×9 公尺；網前 3 公尺攻擊線與正式端線／邊線判定<br>🏆 2v2 先得 11 分／6v6 先得 25 分，均需領先 2 分</div><button id="menuStart" disabled>載入遊戲中…</button><div id="menuFoot">請保持網路連線，正在載入 3D 引擎…</div></div></div>
 </div>
 <script>
 window.addEventListener('load',()=>{
@@ -92,7 +92,9 @@ function box(x,y,z,w,h,d,color,mat){const mesh=new THREE.Mesh(new THREE.BoxGeome
 // V2.3：以一個遊戲座標單位代表一公尺；x 為場寬、z 為場長，中線位於 z=0。
 const COURT_WIDTH=9, COURT_LENGTH=18, HALF_WIDTH=COURT_WIDTH/2, END_LINE=COURT_LENGTH/2;
 const ATTACK_LINE=3, LINE_WIDTH=.05, NET_TOP=2.43, SERVE_MIN=END_LINE+.30;
-const AI_RUN_SPEED=5.65, AI_REACTION_TIME=.12; // 不再比玩家跑得快，增加接球反應時間
+// V2.5: 保留 18×9m 球場，人物縮小並降低全隊追球速度；幾何碰撞判定同步縮放。
+const CHARACTER_SCALE=.84, PLAYER_RUN_SPEED=4.25, AI_RUN_SPEED=4.35, AI_REPOSITION_SPEED=2.75, AI_BLOCK_RUN_SPEED=4.55;
+const AI_REACTION_TIME=.12;
 // 全場 9 × 18 m；周圍留至少 3 m 的自由區。前排三米區以柔和色差顯示。
 box(0,-.13,0,17,.25,24.5,0x558e8e);
 box(0,-.015,0,COURT_WIDTH,.04,COURT_LENGTH,0xe8a778);
@@ -123,7 +125,7 @@ const TOSS_SPEED=6.9, SERVE_TIME_LIMIT=1.75;
 const JUMP_SERVE_SPEED_TIME=1.10, JUMP_SERVE_GRAV=14.0;
 // V1.8：扣殺使用較高的專用下墜加速度，縮短過網飛行時間，但仍經由 arcOverNet 保障網頂高度。
 // V1.9：短距離前撲、低球實體碰撞救球及回復時間，避免無限連續撲接。
-const DIVE_LUNGE=.40, DIVE_CONTACT_END=.58, DIVE_DURATION=1.08, DIVE_COOLDOWN=1.7, DIVE_SPEED=8.4;
+const DIVE_LUNGE=.40, DIVE_CONTACT_END=.58, DIVE_DURATION=1.08, DIVE_COOLDOWN=1.7, DIVE_SPEED=7.6;
 const SPIKE_GRAV=23.6; // 一般來球為 11.8；扣球使用較陡的高速下墜球路
 // 每次 AI 真正觸球才抽一次失誤，不在逐影格內抽；隊友失誤率較低，避免玩家一直被拖累。
 const AI_ERROR_CHANCE={ally:.025,opponent:.045};
@@ -142,7 +144,7 @@ const HIT_ACTIVE_START=0, HIT_ACTIVE_END=.49; // 按下立即有效，短時間�
 const up=new THREE.Vector3(0,1,0), scratch=new THREE.Vector3(), handWorld=new THREE.Vector3(), prevBall=new THREE.Vector3();
 function makeActor(color,x,z,hasMarker=false){
   const root=new THREE.Group();scene.add(root);root.position.set(x,0,z);
-  const rig=new THREE.Group();root.add(rig);
+  const rig=new THREE.Group();root.add(rig);rig.scale.setScalar(CHARACTER_SCALE);
   const jersey=new THREE.MeshStandardMaterial({color,roughness:.62});
   const skin=new THREE.MeshStandardMaterial({color:0xffd4ad,roughness:.67});
   const body=new THREE.Mesh(new THREE.CapsuleGeometry(.34,.6,5,10),jersey);body.position.y=.87;body.castShadow=true;rig.add(body);
@@ -159,7 +161,7 @@ function makeActor(color,x,z,hasMarker=false){
     const arm=new THREE.Mesh(new THREE.CylinderGeometry(.105,.095,1,8),skin);
     arm.castShadow=true;rig.add(arm);arms.push(arm);
   }
-  if(hasMarker){const ring=new THREE.Mesh(new THREE.TorusGeometry(.53,.055,8,36),new THREE.MeshBasicMaterial({color:0xffea63}));ring.rotation.x=Math.PI/2;ring.position.y=.045;root.add(ring);}
+  if(hasMarker){const ring=new THREE.Mesh(new THREE.TorusGeometry(.46,.045,8,36),new THREE.MeshBasicMaterial({color:0xffea63}));ring.rotation.x=Math.PI/2;ring.position.y=.045;root.add(ring);}
   return {root,rig,body,head,legs,hands,arms,diveTime:-1,diveCooldown:0,diveDirX:0,diveDirZ:-1,diveConnected:false,team:z>0?0:1,jumpV:0,air:0,cool:0,swingTime:-1,swingType:'',swingConnected:false,blockArmed:0,blockDecisionFlight:-1,blockDecisionAccepted:false,missFlightId:-1,serveJumpValid:false};
 }
 const actors=[makeActor(0xf68a4e,-2.2,5.6,true),makeActor(0xf6bc56,2.5,4.4),makeActor(0x368adf,-2.3,-5.3),makeActor(0x56b3ef,2.2,-4.2)];
@@ -292,7 +294,7 @@ function chooseReceiver(team,intercept){
     // 攔網者剛落地時通常仍有動作冷卻，優先交給後排隊員救反彈球。
     if(lastTouchMode==='block'&&lastTeam===team&&lastTouchActor===id&&p.cool>.25)continue;
     const d=Math.hypot(intercept.x-p.root.position.x,intercept.z-p.root.position.z);
-    const effective=d-(team===0&&id===0&&d<=1+5.5*Math.min(1.5,Math.max(.2,intercept.t))?1.0:0);
+    const effective=d-(team===0&&id===0&&d<=.84+PLAYER_RUN_SPEED*Math.min(1.5,Math.max(.2,intercept.t))?1.0:0);
     if(effective<best){best=effective;closest=id;}
   }
   teamReceiverChoice[team]={flightId,actorId:closest};
@@ -327,59 +329,69 @@ function updateHitButton(){
 }
 function easePose(x){const t=THREE.MathUtils.clamp(x,0,1);return t*t*(3-2*t);}
 function poseHands(p){
-  const d=p.diveTime;
-  const diving=d>=0;
+  const d=p.diveTime,diving=d>=0;
   if(diving){
-    const fall=easePose(d/.22);
-    const recover=1-easePose((d-.70)/.32);
-    const tilt=1.22*fall*recover;
+    const fall=easePose(d/.22),recover=1-easePose((d-.70)/.32),tilt=1.22*fall*recover;
     const yaw=p.root.rotation.y,cy=Math.cos(yaw),sy=Math.sin(yaw);
-    const lx=cy*p.diveDirX-sy*p.diveDirZ;
-    const lz=sy*p.diveDirX+cy*p.diveDirZ;
-    p.rig.rotation.x=tilt*lz;
-    p.rig.rotation.z=-tilt*lx;
-    p.rig.position.y=.25*fall*recover;
+    const lx=cy*p.diveDirX-sy*p.diveDirZ,lz=sy*p.diveDirX+cy*p.diveDirZ;
+    p.rig.rotation.x=tilt*lz;p.rig.rotation.z=-tilt*lx;p.rig.position.y=.25*fall*recover;
   }else{p.rig.rotation.set(0,0,0);p.rig.position.y=0;}
   const t=p.swingTime,active=t>=0;
   const strength=active?Math.min(1,t/.14,Math.max(0,(.51-t)/.16)):0;
   let mode=active?p.swingType:'idle';
   if(!active&&p.blockArmed>0&&p.air>.14)mode='block';
-  // 強力扣殺：引臂蓄力 → 手臂自頭頂向前揮擊 → 身體前傾收臂 → 回到預備姿勢。
-  const spike=mode==='spike';
-  const keyframes=[
-    [new THREE.Vector3(.49,.98,.03),new THREE.Vector3(.52,2.18,.42)], // 引臂
-    [new THREE.Vector3(-.34,1.52,-.35),new THREE.Vector3(.15,2.54,-.93)], // 空中擊球
-    [new THREE.Vector3(-.35,1.10,-.32),new THREE.Vector3(.23,1.35,-1.07)] // 收臂
+  // V2.5 發球者在拋球前有持球／蓄力姿勢，拋球時左手上揚、右手引臂。
+  const serving=phase==='serve'&&p===actors[serverId()];
+  if(serving&&!active)mode=serveState==='ready'?'serveReady':serveState==='toss'?'serveToss':'idle';
+  const spike=mode==='spike',serveSwing=mode==='serve';
+  const spikeKeys=[
+    [new THREE.Vector3(.49,.98,.03),new THREE.Vector3(.52,2.18,.42)],
+    [new THREE.Vector3(-.34,1.52,-.35),new THREE.Vector3(.15,2.54,-.93)],
+    [new THREE.Vector3(-.35,1.10,-.32),new THREE.Vector3(.23,1.35,-1.07)]
   ];
   for(let h=0;h<2;h++){
-    const sign=h===0?-1:1;
-    const rest=new THREE.Vector3(sign*.47,.94,-.10);
+    const sign=h===0?-1:1,rest=new THREE.Vector3(sign*.47,.94,-.10);
     let target=rest.clone(),blend=strength;
     if(diving){target.set(sign*.30,1.57,-.72);blend=1;}
     else if(spike){
-      const windup=keyframes[0][h],contact=keyframes[1][h],follow=keyframes[2][h];
+      const windup=spikeKeys[0][h],contact=spikeKeys[1][h],follow=spikeKeys[2][h];
       if(t<.115)target.copy(rest).lerp(windup,easePose(t/.115));
       else if(t<.235)target.copy(windup).lerp(contact,easePose((t-.115)/.120));
       else if(t<.385)target.copy(contact).lerp(follow,easePose((t-.235)/.150));
       else target.copy(follow).lerp(rest,easePose((t-.385)/.215));
       blend=1;
-    }
-    else if(mode==='receive'){target.set(sign*.31,1.45,-.50);}
+    }else if(mode==='serveReady'){
+      // 左掌托球，右手向後蓄力；輕微擺臂讓準備動作可見。
+      if(h===0)target.set(-.37,1.78,-.53);
+      else target.set(.53,1.38,.27);
+      blend=1;
+    }else if(mode==='serveToss'){
+      const lift=easePose(Math.min(1,serveClock/.25));
+      if(h===0)target.set(-.37,1.78+(.48*lift),-.53-.14*lift);
+      else target.set(.53,1.38+.27*lift,.27+.16*lift);
+      blend=1;
+    }else if(serveSwing){
+      // 右手後引 → 快速上揮 → 前下方收臂，離球後仍完成全套動作。
+      const ready=h===0?new THREE.Vector3(-.37,1.92,-.67):new THREE.Vector3(.56,1.59,.47);
+      const strike=h===0?new THREE.Vector3(-.39,1.45,-.38):new THREE.Vector3(.22,2.54,-.94);
+      const follow=h===0?new THREE.Vector3(-.35,1.10,-.27):new THREE.Vector3(.35,.93,-.95);
+      if(t<.10)target.copy(ready);
+      else if(t<.23)target.copy(ready).lerp(strike,easePose((t-.10)/.13));
+      else if(t<.44)target.copy(strike).lerp(follow,easePose((t-.23)/.21));
+      else target.copy(follow).lerp(rest,easePose((t-.44)/.18));
+      blend=1;
+    }else if(mode==='receive'){target.set(sign*.31,1.45,-.50);}
     else if(mode==='set'){target.set(sign*.34,2.08,-.53);}
-    else if(mode==='serve'){target.set(sign*.38,h===1?2.40:1.38,h===1?-.53:-.36);}
     else if(mode==='block'){target.set(sign*.36,2.40,-.48);blend=1;}
     rest.lerp(target,blend);p.hands[h].position.copy(rest);
     const shoulder=new THREE.Vector3(sign*.38,1.30,0),delta=rest.clone().sub(shoulder),arm=p.arms[h];
     arm.position.copy(shoulder).addScaledVector(delta,.5);
     arm.quaternion.setFromUnitVectors(up,delta.clone().normalize());arm.scale.y=delta.length();
   }
-  const lean=spike?easePose((t-.13)/.20)*(1-easePose((t-.37)/.20)):0;
-  p.body.rotation.x=-.23*lean;
-  p.head.position.z=-.12*lean;
-  p.head.rotation.x=-.10*lean;
+  const lean=spike?easePose((t-.13)/.20)*(1-easePose((t-.37)/.20)):serveSwing?(.42*easePose((t-.13)/.20)*(1-easePose((t-.42)/.19))):0;
+  p.body.rotation.x=-.23*lean;p.head.position.z=-.12*lean;p.head.rotation.x=-.10*lean;
   const kick=p.air>.1?THREE.MathUtils.clamp(p.air/.65,0,1):0;
-  p.legs[0].rotation.x=-.28*kick-.18*lean;
-  p.legs[1].rotation.x=.36*kick+.12*lean;
+  p.legs[0].rotation.x=-.28*kick-.18*lean;p.legs[1].rotation.x=.36*kick+.12*lean;
   p.root.updateMatrixWorld(true);
 }
 actors.forEach((p,i)=>{p.root.visible=teamRosters[p.team].indexOf(i)<gameMode;p.root.rotation.y=p.team===0?0:Math.PI;poseHands(p);});
@@ -397,10 +409,15 @@ function resetPositions(team){
 }
 function serverId(){return rotationOrder[serveTeam][0];}
 function isBehindLine(p){return p.team===0?p.root.position.z>=SERVE_MIN:p.root.position.z<=-SERVE_MIN;}
-function heldBallPosition(p){return p.root.localToWorld(new THREE.Vector3(.38,1.52,-.51));}
+function heldBallPosition(p){
+  // 世界座標與縮小後模型一致；準備動作的左手真正托住球。
+  p.root.updateMatrixWorld(true);
+  return p.rig.localToWorld(new THREE.Vector3(-.37,1.81,-.72));
+}
 function newServe(team){
   serveTeam=team;serveState='ready';serveClock=0;touches=[0,0];lastTeam=-1;lastTouchActor=-1;lastTouchMode='';
   nextBallFlight();count.textContent='觸球 0/3';resetPositions(team);phase='serve';updateHitButton();updateRotationInfo();
+  poseHands(actors[serverId()]);
   ball.pos.copy(heldBallPosition(actors[serverId()]));prevBall.copy(ball.pos);ball.vel.set(0,0,0);ball.gravity=GRAV;smashFX.visible=false;smashFXTime=0;
   say(serverId()===0?'你輪到發球！端線外拋球 → 可跳躍 → 擊球':team===0?'我方 AI 輪到發球！你準備進入防守':'AI 對手輪到發球…');
 }
@@ -475,36 +492,33 @@ function diveTouchesBall(p,instant=false){
   const tol=ball.radius+.13;
   for(let i=0;i<=steps;i++){
     const u=i/steps,bx=from.x+(to.x-from.x)*u,by=from.y+(to.y-from.y)*u,bz=from.z+(to.z-from.z)*u;
-    if(pointSegmentDistanceSq(bx,by,bz,torsoA.x,torsoA.y,torsoA.z,torsoB.x,torsoB.y,torsoB.z)<=(.34+tol)**2)return true;
-    if((bx-head.x)**2+(by-head.y)**2+(bz-head.z)**2<=(.29+tol)**2)return true;
-    for(const hand of handPositions)if((bx-hand.x)**2+(by-hand.y)**2+(bz-hand.z)**2<=(HAND_R+tol)**2)return true;
-    for(const [a,b] of arms)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.105+tol)**2)return true;
-    for(const [a,b] of legs)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.12+tol)**2)return true;
+    if(pointSegmentDistanceSq(bx,by,bz,torsoA.x,torsoA.y,torsoA.z,torsoB.x,torsoB.y,torsoB.z)<=(.34*CHARACTER_SCALE+tol)**2)return true;
+    if((bx-head.x)**2+(by-head.y)**2+(bz-head.z)**2<=(.29*CHARACTER_SCALE+tol)**2)return true;
+    for(const hand of handPositions)if((bx-hand.x)**2+(by-hand.y)**2+(bz-hand.z)**2<=(HAND_R*CHARACTER_SCALE+tol)**2)return true;
+    for(const [a,b] of arms)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.105*CHARACTER_SCALE+tol)**2)return true;
+    for(const [a,b] of legs)if(pointSegmentDistanceSq(bx,by,bz,a.x,a.y,a.z,b.x,b.y,b.z)<=(.12*CHARACTER_SCALE+tol)**2)return true;
   }
   return false;
 }
 function modelTouchesBall(p,instant=false){
   if(p.diveTime>=0)return diveTouchesBall(p,instant);
-  const pos=p.root.position,yaw=p.root.rotation.y,cy=Math.cos(yaw),sy=Math.sin(yaw);
+  // 判定座標轉到縮小後的角色 rig 空間：碰撞體跟著人物同步縮小。
+  p.root.updateMatrixWorld(true);
   const begin=instant?ball.pos:prevBall,end=ball.pos;
-  const distance=Math.hypot(end.x-begin.x,end.y-begin.y,end.z-begin.z);
-  const steps=instant?1:Math.max(1,Math.min(18,Math.ceil(distance/.075)));
-  const tolerance=ball.radius+(phase==='serve'?Math.max(MODEL_CONTACT_EPS,HAND_TOLERANCE.serve):MODEL_CONTACT_EPS);
+  const distance=begin.distanceTo(end);
+  const steps=instant?1:Math.max(1,Math.min(18,Math.ceil(distance/.065)));
+  const tolerance=(ball.radius+(phase==='serve'?Math.max(MODEL_CONTACT_EPS,HAND_TOLERANCE.serve):MODEL_CONTACT_EPS))/CHARACTER_SCALE;
+  const sample=new THREE.Vector3();
   for(let i=0;i<=steps;i++){
-    const t=i/steps,wx=begin.x+(end.x-begin.x)*t-pos.x;
-    const wy=begin.y+(end.y-begin.y)*t-pos.y;
-    const wz=begin.z+(end.z-begin.z)*t-pos.z;
-    const x=cy*wx-sy*wz,z=sy*wx+cy*wz;
-    // THREE.CapsuleGeometry: 軀幹中心 (0,.87,0)，圓柱長 .60，半徑 .34
+    const t=i/steps;
+    sample.copy(begin).lerp(end,t);p.rig.worldToLocal(sample);
+    const x=sample.x,wy=sample.y,z=sample.z;
     if(pointSegmentDistanceSq(x,wy,z,0,.57,0,0,1.17,0)<=(.34+tolerance)**2)return true;
-    // 頭部模型
     if(x*x+(wy-1.58)**2+z*z<=(.29+tolerance)**2)return true;
-    // 腿部 CapsuleGeometry: 半徑 .12，圓柱長 .34
     for(const side of [-1,1]){
       const lx=side*.22;
       if(pointSegmentDistanceSq(x,wy,z,lx,.11,0,lx,.45,0)<=(.12+tolerance)**2)return true;
     }
-    // 手臂從肩膀延伸至動作姿勢的手掌，跟著揮擊動畫改變判定範圍
     for(let h=0;h<2;h++){
       const sign=h===0?-1:1,hand=p.hands[h].position;
       if(pointSegmentDistanceSq(x,wy,z,sign*.38,1.30,0,hand.x,hand.y,hand.z)<=(.105+tolerance)**2)return true;
@@ -517,7 +531,7 @@ function modelTouchesBall(p,instant=false){
 // 攔網維持既有手部判定；不會因碰到身體自動攔網成功。
 function handTouchesBall(p,handIndex){
   const hand=p.hands[handIndex];hand.getWorldPosition(handWorld);
-  const radius=HAND_R+ball.radius+HAND_TOLERANCE.block+(p===actors[0]?0:AI_BLOCK_REACH_BONUS);
+  const radius=HAND_R*CHARACTER_SCALE+ball.radius+HAND_TOLERANCE.block+(p===actors[0]?0:AI_BLOCK_REACH_BONUS);
   const segment=ball.pos.clone().sub(prevBall);
   const lengthSq=segment.x*segment.x+segment.y*segment.y+segment.z*segment.z;
   const delta=handWorld.clone().sub(prevBall);
@@ -562,7 +576,7 @@ function resolveContact(p,mode){
     const target=autoTarget(team,true);
     if(jumping)arcOverNet(target.x,target.z,.95,JUMP_SERVE_SPEED_TIME,JUMP_SERVE_GRAV);
     else arcOverNet(target.x,target.z,1.05,1.55);
-    serveState='done';phase='play';updateHitButton();p.cool=.50;p.swingTime=-1;
+    serveState='done';phase='play';updateHitButton();p.cool=.50;p.swingType='serve';p.swingTime=Math.max(.14,p.swingTime);p.swingConnected=true;
     if(jumping)triggerSmashFX();
     say(team===0?(jumping?'💥 跳躍發球成功！':'發球成功！準備防守'):'AI 已發球！準備接球');
     return true;
@@ -673,7 +687,7 @@ document.getElementById('modeBtn').addEventListener('click',()=>selectMode(gameM
 function tossServe(p){
   if(phase!=='serve'||serveState!=='ready'||p!==actors[serverId()])return false;
   if(!isBehindLine(p)){if(p.team===0)say('請退到白色端線外再按「拋球」');return false;}
-  serveState='toss';serveClock=0;faceTowardCourt(p);
+  serveState='toss';serveClock=0;faceTowardCourt(p);poseHands(p);
   ball.pos.copy(heldBallPosition(p));prevBall.copy(ball.pos);
   const throwVector=new THREE.Vector3(0,TOSS_SPEED,-.22).applyAxisAngle(up,p.root.rotation.y);
   ball.vel.copy(throwVector);ball.gravity=GRAV;p.swingTime=-1;
@@ -825,8 +839,8 @@ function difficultyFor(pred){
   const human=actors[0].root.position;
   const distance=Math.hypot(aimPoint.x-human.x,aimPoint.z-human.z);
   // 扣除反應時間，計入手部約 0.7m 的可及範圍；只是跑位提示，不影響接球判定。
-  const available=Math.max(0,aimPoint.t-.15),reach=.70+5.5*available;
-  if(distance<=.70+5.5*available*.65)return 'easy';
+  const available=Math.max(0,aimPoint.t-.15),reach=.59+PLAYER_RUN_SPEED*available;
+  if(distance<=.59+PLAYER_RUN_SPEED*available*.65)return 'easy';
   if(distance<=reach)return 'medium';
   return 'hard';
 }
@@ -956,7 +970,7 @@ function ai(dt){
         if(!p.blockDecisionAccepted)aiStats.blockSkipped++;
       }
     }
-    moveActor(p,targetX,targetZ,dt,blocking?5.9:responder?AI_RUN_SPEED:3.3);
+    moveActor(p,targetX,targetZ,dt,blocking?AI_BLOCK_RUN_SPEED:responder?AI_RUN_SPEED:AI_REPOSITION_SPEED);
     if(blocking&&read.kind==='attack'&&p.blockDecisionAccepted&&read.time<=AI_BLOCK_LEAD_TIME&&read.time>=-.09&&p.air<=.01&&p.blockArmed<=0&&Math.abs(read.x-p.root.position.x)<.98&&Math.abs(p.root.position.z)<1.50){
       p.jumpV=6.15;p.blockArmed=.90;faceBall(p);aiStats.blockAttempts++;
     }
@@ -980,7 +994,7 @@ function update(dt){
   if(paused||phase==='idle'||phase==='finished')return;
   if(smashFXTime>0)smashFXTime=Math.max(0,smashFXTime-dt);
   const p=actors[0],x=(keys.d?1:0)-(keys.a?1:0)+stick.x,z=(keys.s?1:0)-(keys.w?1:0)+stick.z,len=Math.hypot(x,z);
-  if(p.diveTime<0&&len>.08)moveActor(p,p.root.position.x+x/len*5.5*dt,p.root.position.z+z/len*5.5*dt,dt,5.5);
+  if(p.diveTime<0&&len>.08)moveActor(p,p.root.position.x+x/len*PLAYER_RUN_SPEED*dt,p.root.position.z+z/len*PLAYER_RUN_SPEED*dt,dt,PLAYER_RUN_SPEED);
   if(p.diveTime>=0){
     p.diveTime+=dt;
     if(p.diveTime<DIVE_LUNGE){
@@ -1074,10 +1088,11 @@ if(new URLSearchParams(location.search).has('debug'))window.__volleyDebug={
   get assist(){return {mode:assistMode,visible:landingRing.visible,trailCount:trailPieces.filter(p=>p.visible).length,landing:assistPrediction?.landing??null,netBounces:assistPrediction?.netBounces??0,difficulty:assistDifficulty,hint:assistHint.textContent};},
   setAssistMode(mode){if(!ASSIST_MODES.includes(mode))throw new Error("invalid assist mode");assistMode=mode;paintAssistButton();assistRefreshClock=0;hideAssist();},
   predictBallFlight,trajectoryAt,predictReachPoint,difficultyFor,refreshAssist,
+  get characterTuning(){return {scale:CHARACTER_SCALE,playerSpeed:PLAYER_RUN_SPEED,aiSpeed:AI_RUN_SPEED,aiReposition:AI_REPOSITION_SPEED,aiBlockSpeed:AI_BLOCK_RUN_SPEED,diveSpeed:DIVE_SPEED,serveAnimationPhase:phase==='serve'?serveState:(actors[serverId()].swingTime>=0?'followThrough':'idle')};},
   get serveJump(){const p=actors[0];return {air:p.air,takeoffValid:p.serveJumpValid,jumpVelocity:p.jumpV,jumpDisabled:jumpButton.disabled,hitLabel:hitButton.textContent}},
   get physics(){return {tossSpeed:TOSS_SPEED,tossApex:1.52+TOSS_SPEED*TOSS_SPEED/(2*GRAV),jumpServeGravity:JUMP_SERVE_GRAV,spikeGravity:SPIKE_GRAV,flightGravity:ball.gravity,spikeSpeed:Math.hypot(ball.vel.x,ball.vel.y,ball.vel.z),handTolerance:{...HAND_TOLERANCE},modelContactEps:MODEL_CONTACT_EPS,prevBall:[prevBall.x,prevBall.y,prevBall.z]}},
   get dive(){const p=actors[0];return {time:p.diveTime,cooldown:p.diveCooldown,connected:p.diveConnected,dx:p.diveDirX,dz:p.diveDirZ,buttonDisabled:diveButton.disabled,buttonText:diveButton.textContent};},
-  get court(){return {width:COURT_WIDTH,length:COURT_LENGTH,halfWidth:HALF_WIDTH,endLine:END_LINE,attackLine:ATTACK_LINE,netHeight:NET_TOP,serveMin:SERVE_MIN,aiSpeed:AI_RUN_SPEED,aiReaction:AI_REACTION_TIME}},
+  get court(){return {width:COURT_WIDTH,length:COURT_LENGTH,halfWidth:HALF_WIDTH,endLine:END_LINE,attackLine:ATTACK_LINE,netHeight:NET_TOP,serveMin:SERVE_MIN,aiSpeed:AI_RUN_SPEED,playerSpeed:PLAYER_RUN_SPEED,actorScale:CHARACTER_SCALE,aiReaction:AI_REACTION_TIME}},
   autoTarget, get aiMistakes(){return {...AI_ERROR_CHANCE}},
   aiFastBallPressure,aiReceiveMissRate, get defenseBalance(){return {blockCommitChance:AI_BLOCK_COMMIT_CHANCE,blockHandTolerance:HAND_TOLERANCE.block,aiBlockReachBonus:AI_BLOCK_REACH_BONUS,fastMinSpeed:AI_FAST_MIN_SPEED,fastFullSpeed:AI_FAST_FULL_SPEED,fastExtra:{...AI_FAST_RECEIVE_EXTRA},fastReactionExtra:AI_FAST_REACTION_EXTRA}},
   get aiStats(){return {...aiStats}},blockRead,
@@ -1086,7 +1101,7 @@ if(new URLSearchParams(location.search).has('debug'))window.__volleyDebug={
   setRally(state){phase='play';paused=false;ball.pos.set(...state.ballPos);ball.vel.set(...(state.ballVel||[0,0,0]));ball.gravity=state.gravity||GRAV;prevBall.copy(ball.pos);touches=[...(state.touches||[0,0])];lastTeam=state.lastTeam??-1;lastTouchActor=state.lastTouchActor??-1;lastTouchMode=state.lastTouchMode??'';nextBallFlight();actors.forEach(p=>{p.cool=0;p.diveTime=-1;p.diveCooldown=0;p.diveConnected=false;p.swingTime=-1;p.swingConnected=false;p.blockArmed=0;p.blockDecisionFlight=-1;p.blockDecisionAccepted=false;p.missFlightId=-1;p.serveJumpValid=false;poseHands(p);});}
 };
 menuStart.disabled=false;menuStart.textContent='開始比賽';refreshDiveButton();
-document.getElementById('menuFoot').textContent='V2.4 降低攔網成功率 · 高速扣殺增加 AI 救球難度 · 正規 18×9m 場地';
+document.getElementById('menuFoot').textContent='V2.5 人物縮小 16% · 移動速度降低 · 發球持球、拋球及揮臂動畫';
 </script>
 </body>
 </html>
